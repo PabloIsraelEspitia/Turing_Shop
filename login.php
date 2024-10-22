@@ -13,13 +13,12 @@ if (isset($_POST['register'])) {
     $password = $_POST['password'];
     $tipo_usuario = $_POST['tipo_usuario'];
 
-    // Verificar si el correo ya está registrado
     $checkEmailQuery = $mysqli->prepare("SELECT COUNT(*) FROM usuarios WHERE correo = ?");
     $checkEmailQuery->bind_param("s", $correo);
     $checkEmailQuery->execute();
     $checkEmailQuery->bind_result($emailCount);
     $checkEmailQuery->fetch();
-    $checkEmailQuery->close(); // Cerrar la consulta
+    $checkEmailQuery->close();
 
     if ($emailCount > 0) {
         echo "<script>alert('Este correo ya está registrado.');</script>";
@@ -33,7 +32,7 @@ if (isset($_POST['register'])) {
         } else {
             echo "<script>alert('Error en el registro: " . $stmt->error . "');</script>";
         }
-        $stmt->close(); // Cerrar la consulta
+        $stmt->close();
     }
 }
 
@@ -58,7 +57,7 @@ if (isset($_POST['login'])) {
             echo "<script>alert('Correo o contraseña incorrectos.');</script>";
         }
     }
-    $stmt->close(); // Cerrar la consulta
+    $stmt->close();
 }
 
 $mysqli->close();
