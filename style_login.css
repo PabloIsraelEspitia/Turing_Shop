@@ -11,6 +11,7 @@ body {
 }
 h2, h3 {
     color: #112e40;
+    margin-top: 40px;
 }
 .slogan {
     background-color: #c8d3d9;
@@ -319,4 +320,53 @@ h2, h3 {
 .login-section h2 {
     color: #112e40;
     margin-bottom: 30px;
+}
+@media (max-width: 600px) {
+    .main-header {
+        flex-direction: column;
+        padding: 20px;
+    }
+    .logo h1 {
+        font-size: 1.5rem;
+    }
+    .nav-bar ul {
+        flex-direction: column;
+    }
+    .carousel img {
+        height: 300px;
+    }
+    .card {
+        width: 90%;
+        margin-bottom: 20px;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    .main-header {
+        padding: 10px 15px;
+    }
+    .logo h1 {
+        font-size: 1.6rem;
+    }
+    .nav-bar ul {
+        flex-direction: row;
+    }
+    .carousel img {
+        height: 400px;
+    }
+    .card {
+        width: 45%;
+    }
+}
+
+@media (min-width: 1025px) {
+    .main-header {
+        padding: 10px 20px;
+    }
+    .carousel img {
+        height: 600px;
+    }
+    .card {
+        width: 250px;
+    }
 }

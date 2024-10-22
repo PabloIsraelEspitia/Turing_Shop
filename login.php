@@ -1,5 +1,5 @@
 <?php
-session_start();    
+session_start();
 
 $mysqli = new mysqli("localhost", "root", "", "turing_shop");
 
@@ -9,45 +9,61 @@ if ($mysqli->connect_error) {
 
 if (isset($_POST['register'])) {
     $nombre = $_POST['nombre'];
-    $correo = $_POST['correo'];
+    $correo = filter_var($_POST['correo'], FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
     $tipo_usuario = $_POST['tipo_usuario'];
 
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    // Verificar si el correo ya está registrado
+    $checkEmailQuery = $mysqli->prepare("SELECT COUNT(*) FROM usuarios WHERE correo = ?");
+    $checkEmailQuery->bind_param("s", $correo);
+    $checkEmailQuery->execute();
+    $checkEmailQuery->bind_result($emailCount);
+    $checkEmailQuery->fetch();
+    $checkEmailQuery->close(); // Cerrar la consulta
 
-    $stmt = $mysqli->prepare("INSERT INTO usuarios (nombre, correo, password, tipo_usuario) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $nombre, $correo, $hashedPassword, $tipo_usuario);
-
-    if ($stmt->execute()) {
-        echo "Registro exitoso!";
+    if ($emailCount > 0) {
+        echo "<script>alert('Este correo ya está registrado.');</script>";
     } else {
-        echo "Error en el registro: " . $stmt->error;
-    }
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $mysqli->prepare("INSERT INTO usuarios (nombre, correo, password, tipo_usuario) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $nombre, $correo, $hashedPassword, $tipo_usuario);
 
-    $stmt->close();
+        if ($stmt->execute()) {
+            echo "<script>alert('Registro exitoso!'); window.location.href='index.php';</script>";
+        } else {
+            echo "<script>alert('Error en el registro: " . $stmt->error . "');</script>";
+        }
+        $stmt->close(); // Cerrar la consulta
+    }
 }
 
 if (isset($_POST['login'])) {
-    $correo = $_POST['correo'];
+    $correo = filter_var($_POST['correo'], FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
 
-    $stmt = $mysqli->prepare("SELECT password FROM usuarios WHERE correo = ?");
+    $stmt = $mysqli->prepare("SELECT id, password FROM usuarios WHERE correo = ?");
     $stmt->bind_param("s", $correo);
     $stmt->execute();
-    $stmt->bind_result($hashedPassword);
+    $stmt->bind_result($id, $hashedPassword);
     $stmt->fetch();
-    $stmt->close();
 
-    if (password_verify($password, $hashedPassword)) {
-        $_SESSION['usuario'] = $correo;
-        echo "Inicio de sesión exitoso!";
+    if ($stmt->errno) {
+        echo "<script>alert('Error en la consulta: " . $stmt->error . "');</script>";
     } else {
-        echo "Correo o contraseña incorrectos.";
+        if (password_verify($password, $hashedPassword)) {
+            $_SESSION['usuario'] = $correo;
+            $_SESSION['usuario_id'] = $id;
+            echo "<script>alert('Inicio de sesión exitoso!'); window.location.href='index.php';</script>";
+        } else {
+            echo "<script>alert('Correo o contraseña incorrectos.');</script>";
+        }
     }
+    $stmt->close(); // Cerrar la consulta
 }
 
 $mysqli->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,10 +90,9 @@ $mysqli->close();
             </ul>
         </nav>
         <div class="user-cart">
-            <a href=""><img src="src/iconos/carrito_logo.png" alt="Carrito de Compras"></a>
+            <a href="ver_carrito.php"><img src="src/iconos/carrito_logo.png" alt="Carrito de Compras"></a>
         </div>
     </header>
-
     <section class="login-section">
         <h2>Iniciar Sesión o Registrarse</h2>
         <div class="login-container">
@@ -104,7 +119,6 @@ $mysqli->close();
             </form>            
         </div>
     </section>
-
     <footer class="pie-pagina">
         <div class="grupo-1">
             <div class="box">

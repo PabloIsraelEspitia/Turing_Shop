@@ -1,7 +1,6 @@
 let currentSlide = 0;
 const slides = document.querySelectorAll('.carousel-item');
 const totalSlides = slides.length;
-
 function showSlide(slideIndex) {
     slides.forEach((slide, index) => {
         slide.classList.remove('active');
@@ -10,19 +9,15 @@ function showSlide(slideIndex) {
         }
     });
 }
-
 function nextSlide() {
     currentSlide = (currentSlide + 1) % totalSlides;
     showSlide(currentSlide);
 }
-
 function prevSlide() {
     currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
     showSlide(currentSlide);
 }
-
 setInterval(() => {
     nextSlide();
 }, 5000);
-
 showSlide(currentSlide);

@@ -11,6 +11,7 @@ body {
 }
 h2, h3 {
     color: #112e40;
+    margin-bottom: 40px;
 }
 .slogan {
     background-color: #c8d3d9;
@@ -85,10 +86,10 @@ h2, h3 {
 }
 .carousel-description {
     position: absolute;
-    bottom: 20px;
+    bottom: 50% ;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(255, 255, 255, 0.6);
     color: white;
     padding: 10px;
     border-radius: 5px;
@@ -150,22 +151,9 @@ h2, h3 {
 .card h3 {
     margin: 10px 0;
 }
-.card label {
+label {
     display: block;
     margin-bottom: 10px;
-}
-.card button {
-    background-color: #112e40;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.card button:hover {
-    background-color: white;
-    color: #112e40;
-    border: 1px solid #112e40;
 }
 .ofertas-section {
     margin: 40px 0;
@@ -274,4 +262,107 @@ h2, h3 {
 }
 .pie-pagina .grupo-2 small{
     font-size: 15px;
+}
+.btn-comprar {
+    margin-top: 10px;
+    background-color: #112e40;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+.btn-comprar:hover {
+    background-color: white;
+    color: #112e40;
+    border: 1px solid #112e40;
+}
+
+@media (max-width: 600px) {
+    .main-header {
+        flex-direction: column;
+        padding: 10px;
+    }
+    .logo h1 {
+        font-size: 1.5rem;
+    }
+    .nav-bar ul {
+        flex-direction: column;
+    }
+    .nav-bar ul li {
+        margin: 10px 0;
+    }
+    .carousel img {
+        height: 300px;
+    }
+    .card-container, .ofertas-container, .nuevos-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .card, .oferta, .nuevo {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .pie-pagina .grupo-1 {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 1024px) {
+    .main-header {
+        flex-direction: column;
+        padding: 15px;
+    }
+    .logo h1 {
+        font-size: 1.7rem;
+    }
+    .nav-bar ul {
+        flex-direction: row;
+    }
+    .nav-bar ul li {
+        margin: 5px;
+    }
+    .carousel img {
+        height: 400px;
+    }
+    .card-container, .ofertas-container, .nuevos-container {
+        justify-content: center;
+    }
+    .card, .oferta, .nuevo {
+        width: 45%;
+        margin-bottom: 20px;
+    }
+    .pie-pagina .grupo-1 {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 1025px) {
+    .main-header {
+        flex-direction: row;
+        padding: 20px;
+    }
+    .logo h1 {
+        font-size: 2rem;
+    }
+    .nav-bar ul {
+        flex-direction: row;
+    }
+    .nav-bar ul li {
+        margin: 0 15px;
+    }
+    .carousel img {
+        height: 600px;
+    }
+    .card-container, .ofertas-container, .nuevos-container {
+        justify-content: space-around;
+    }
+    .card, .oferta, .nuevo {
+        width: 250px;
+    }
+    .pie-pagina .grupo-1 {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
